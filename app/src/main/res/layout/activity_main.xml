@@ -17,7 +17,7 @@
         android:id="@+id/drawerlayout"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/fragment_layout"
@@ -25,14 +25,13 @@
             android:layout_height="match_parent" >
         </FrameLayout>
 
-        <RelativeLayout
-            android:id="@+id/left"
-            android:layout_width="230dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-          >
 
-        </RelativeLayout>
+        <include
+            android:id="@+id/drawer"
+            layout="@layout/layout_drawer">
+        </include>
+
+
 
 
     </android.support.v4.widget.DrawerLayout>

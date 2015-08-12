@@ -23,4 +23,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.4'
+    compile 'be.webelite:ion-iconview:1.0.4@aar'
+    compile 'com.android.support:design:22.2.0'
+}
+
+repositories {
+    maven { url 'https://github.com/MarsVard/IonIconView/raw/master/maven' }
 }
