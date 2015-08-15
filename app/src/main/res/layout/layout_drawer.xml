@@ -37,7 +37,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/drawer_item_city"
+                android:id="@+id/drawer_item_controlcity"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/list_item_height"
                 android:background="@drawable/view_click_state">
@@ -49,7 +49,7 @@
                     android:layout_marginLeft="@dimen/text_margin"
                     android:textColor="@color/accent_color"
                     android:textSize="@dimen/drawer_icon_size"
-                    ioniconview:name="ion_arrow_expand" />
+                    ioniconview:name="ion_home" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -93,7 +93,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/drawer_item_share"
+                android:id="@+id/drawer_item_about"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/list_item_height"
                 android:background="@drawable/view_click_state">
@@ -105,7 +105,7 @@
                     android:layout_marginLeft="@dimen/text_margin"
                     android:textColor="@color/accent_color"
                     android:textSize="@dimen/drawer_icon_size"
-                    ioniconview:name="ion_help_buoy" />
+                    ioniconview:name="ion_social_android" />
 
                 <TextView
                     android:layout_width="match_parent"

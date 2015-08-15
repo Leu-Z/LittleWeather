@@ -8,6 +8,7 @@ import android.util.Log;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 
 /**
+ *
  * Created by Leu on 2015/8/11.
  */
 public class BaseActivity extends AppCompatActivity {
@@ -16,6 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //每个继承自这个活动的子活动都会Log自己的名字
         Log.d("BaseActivity",getClass().getSimpleName());
     }
 
