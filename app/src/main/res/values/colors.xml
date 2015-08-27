@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dark_primary_color">#303f9f</color>
-    <color name="primary_color">#3f51b5</color>
-    <color name="accent_color">#3a3a3a</color>
+    <color name="light_blue_500">#00bcd4</color>
+    <color name="light_blue_700">#0097a7</color>
+    <color name="lime_A200">#eeff41</color>
     <color name="press_color">#94aeb3c8</color>
-    <color name="background">#ffffff</color>
-    <color name="tool_text">#ffffff</color>
+    <color name="drawer_background">#ffffff</color>
+    <color name="drawer_picture_text">#ffffff</color>
+    <color name="main_background">#ffffff</color>
+    <color name="toolbar_text">#ffffff</color>
+    <color name="control">#ffffff</color>
 
 </resources>

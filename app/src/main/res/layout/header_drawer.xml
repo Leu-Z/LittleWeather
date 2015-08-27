@@ -3,25 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="@drawable/background_drawer_header"
-    android:orientation="vertical"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Light">
 
 
-    <TextView
-        android:id="@+id/id_link"
+    <ImageView
+        android:id="@+id/drawer_head_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/location"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:text="http://blog.csdn.net/lmj623565791"/>
-
+        android:layout_marginBottom="@dimen/drawer_head_text_margin"
+        />
     <TextView
-        android:id="@+id/id_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/id_link"
-        android:text="Zhang Hongyang"/>
+        android:layout_marginBottom="@dimen/drawer_head_text_margin"
+        android:layout_marginLeft="40dp"
+        android:layout_alignParentBottom="true"
+        android:text="桐乡"
+        android:textSize="25dp" />
 
 
 
