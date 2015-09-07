@@ -1,4 +1,4 @@
-package com.leu.littleweather;
+package com.leu.littleweather.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

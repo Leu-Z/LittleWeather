@@ -4,15 +4,15 @@
     <group>
         <item
             android:id="@+id/drawer_item_control_city"
-            android:icon="@drawable/earth"
+            android:icon="@drawable/ic_store_black_24dp"
             android:title="管理城市"/>
         <item
             android:id="@+id/drawer_item_setting"
-            android:icon="@drawable/cog"
+            android:icon="@drawable/ic_settings_black_24dp"
             android:title="设置"/>
         <item
             android:id="@+id/drawer_item_about"
-            android:icon="@drawable/grin"
+            android:icon="@drawable/ic_view_module_black_24dp"
             android:title="关于"/>
     </group>
 

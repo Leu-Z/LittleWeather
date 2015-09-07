@@ -8,7 +8,8 @@
         <item name="colorPrimary">@color/light_blue_500</item>
         <item name="colorPrimaryDark">@color/light_blue_700</item>
         <item name="colorAccent">@color/lime_A200</item>
-        <item name="android:windowBackground">@color/main_background</item>
+
+
     </style>
 
 

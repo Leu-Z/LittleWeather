@@ -3,11 +3,8 @@
     <color name="light_blue_500">#00bcd4</color>
     <color name="light_blue_700">#0097a7</color>
     <color name="lime_A200">#eeff41</color>
-    <color name="press_color">#94aeb3c8</color>
-    <color name="drawer_background">#ffffff</color>
-    <color name="drawer_picture_text">#ffffff</color>
-    <color name="main_background">#ffffff</color>
-    <color name="toolbar_text">#ffffff</color>
-    <color name="control">#ffffff</color>
+    <color name="main_background">#00bcd4</color>
+
+
 
 </resources>
