@@ -3,6 +3,7 @@ package com.leu.littleweather.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.biz.ForecastBiz;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
-
+    protected Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
@@ -35,6 +37,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         mforecastDao=new ForecastDao(this);
         initView();
@@ -94,7 +97,7 @@ public class MainActivity extends BaseActivity {
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_add_city:
-                    Intent intent = new Intent(MainActivity.this, CitySettingActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CityAddActivity.class);
                     startActivity(intent);
                     break;
             }
@@ -111,17 +114,26 @@ public class MainActivity extends BaseActivity {
     private void initViewPager(){
         mOutterViewPager = (ViewPager) findViewById(R.id.outterViewpager);
         //设置viewpager切换动画
+        FragmentManager fm = getSupportFragmentManager();
+       // OutterFragment outterFragment=(OutterFragment)fm.findFragmentById(R.id.outterViewpager);
         mOutterViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         mFragmentList = new ArrayList<OutterFragment>();
         mForecasts=mforecastDao.getAllCity();
+        //用于防止重复创建碎片
+       /* if(outterFragment==null) {
+            for (int i = 0; i < mForecasts.size(); i++) {
+                mFragmentList.add(OutterFragment.newInstance(mForecasts.get(i).getCity()));
+            }
 
+            mOutterViewPager.setAdapter(new OutterPagerAdapter(fm, mFragmentList));
+        }*/
         for (int i = 0; i < mForecasts.size(); i++) {
             mFragmentList.add(OutterFragment.newInstance(mForecasts.get(i).getCity()));
-
         }
 
-        mOutterViewPager.setAdapter(new OutterPagerAdapter(getSupportFragmentManager(), mFragmentList));
+        mOutterViewPager.setAdapter(new OutterPagerAdapter(fm, mFragmentList));
+        mToolbar.setTitle(mForecasts.get(0).getCity());
         mOutterViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

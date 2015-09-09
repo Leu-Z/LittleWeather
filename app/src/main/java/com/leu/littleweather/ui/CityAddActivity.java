@@ -1,5 +1,6 @@
 package com.leu.littleweather.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
+import com.leu.littleweather.util.ActivityCollector;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by Leu on 2015/9/1.
  */
-public class CitySettingActivity extends BaseActivity{
+public class CityAddActivity extends BaseActivity{
     private AutoCompleteTextView mAutoCompleteTextView;
     private ForecastDao mforecastDao;
     @Override
@@ -43,6 +45,10 @@ public class CitySettingActivity extends BaseActivity{
                     Forecast forecast=new Forecast();
                     forecast.setCity((String) textview.getText());
                     mforecastDao.addOrUpdate(forecast);
+                    //把主活动销毁，重新创建
+                    ActivityCollector.activities.get(0).finish();
+                    Intent intent=new Intent(CityAddActivity.this,MainActivity.class);
+                    startActivity(intent);
                     finish();
                 }
             }
@@ -89,7 +95,7 @@ public class CitySettingActivity extends BaseActivity{
     public boolean ifCityExist(String city){
         Forecast forecast=mforecastDao.getForecastByCity(city);
         if (forecast!=null){
-            Toast.makeText(CitySettingActivity.this,"该城市已存在",Toast.LENGTH_SHORT).show();
+            Toast.makeText(CityAddActivity.this,"该城市已存在",Toast.LENGTH_SHORT).show();
             return true;
         }else {
 

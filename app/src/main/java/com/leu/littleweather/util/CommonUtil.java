@@ -19,16 +19,7 @@ public class CommonUtil {
         return (info != null && info.isConnected());
 
     }
-   /* *//**
-     *判断是否配置过了城市，如果数据库是空的，立即跳转到设置城市页面
-     *//*
-    private void isCityConf(int cityNum,Context context) {
-        if(cityNum<0){
-            startActivity(new Intent(context, CitySettingActivity.class));
-            ;
-        }
-    }
-*/
+
 
 
 }

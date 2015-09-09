@@ -3,13 +3,15 @@ package com.leu.littleweather.bean;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * Created by Leu on 2015/8/31.
  * 其实就是数据库中的一张表,这里会与数据库的表相映射
  * cloumnName:指定字段名,不指定则变量名作为字段名,白指定了。。。
  */
 @DatabaseTable(tableName = "tb_forecast")
-public class Forecast {
+public class Forecast implements Serializable {
     @DatabaseField(generatedId = true)
     private int id;
     @DatabaseField(columnName = "city")
@@ -142,6 +144,8 @@ public class Forecast {
     private String daily_5_min;
     @DatabaseField(columnName = "status")
     private String status;
+
+
 
     public int getId() {
         return id;

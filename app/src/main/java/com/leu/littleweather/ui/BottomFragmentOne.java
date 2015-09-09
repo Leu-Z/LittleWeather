@@ -1,30 +1,31 @@
 package com.leu.littleweather.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.leu.littleweather.R;
+import com.leu.littleweather.bean.Forecast;
 
 /**
  * Created by Leu on 2015/9/6.
  */
-public class BottomFragmentOne extends Fragment {
-    private static final String ARG_TMPD = "day";
-    private static final String ARG_TMPN = "night";
-    private String mTmpD;
-    private String mTmpN;
+public class BottomFragmentOne extends BaseFragment {
+    private static final String ARG_CITY = "city";
+    private String mCity;
+    private TextView tmpD;
+    private TextView tmpN;
+    private SimpleDraweeView imageD;
+    private SimpleDraweeView imageN;
 
-    public static BottomFragmentOne newInstanceOne(String tmpD,String tmpN) {
+    public static BottomFragmentOne newInstanceOne(String city) {
 
         BottomFragmentOne fragment = new BottomFragmentOne();
         Bundle args = new Bundle();
-        args.putString(ARG_TMPD, tmpD);
-        args.putString(ARG_TMPN,tmpN);
-
+        args.putString(ARG_CITY, city);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,8 +34,7 @@ public class BottomFragmentOne extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-            mTmpD = getArguments().getString(ARG_TMPD);
-            mTmpN = getArguments().getString(ARG_TMPN);
+            mCity = getArguments().getString(ARG_CITY);
         }
     }
 
@@ -43,14 +43,24 @@ public class BottomFragmentOne extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.bottom_fragment_one, container, false);
-        //根据传递进来的mNewsType生成特定的view
-        TextView tmpD= (TextView) view.findViewById(R.id.tmp_d);
-        TextView tmpN= (TextView) view.findViewById(R.id.tmp_n);
-        tmpD.setText(mTmpD);
-        tmpN.setText(mTmpN);
-
+        tmpD= (TextView) view.findViewById(R.id.tmp_d);
+         tmpN = (TextView) view.findViewById(R.id.tmp_n);
+        imageD= (SimpleDraweeView) view.findViewById(R.id.image_d);
+        imageN= (SimpleDraweeView) view.findViewById(R.id.image_n);
+        setUI();
         return view;
     }
+    //用来设置UI，更新UI时重新从数据库获取数据，进行设置
+    public void setUI(){
+        Forecast forecast = mFrecastDao.getForecastByCity(mCity);
+        tmpD.setText(forecast.getDaily_1_max());
+        tmpN.setText(forecast.getDaily_1_min());
+        imageD.setImageURI(getImageUri(forecast.getDaily_1_code_d()));
+        imageN.setImageURI(getImageUri(forecast.getDaily_1_code_n()));
+    }
+
+
+
 
 
 }
