@@ -3,6 +3,7 @@ package com.leu.littleweather.ui;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -25,5 +26,10 @@ public class OutterPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return mList.get(position);
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        return super.instantiateItem(container, position);
     }
 }

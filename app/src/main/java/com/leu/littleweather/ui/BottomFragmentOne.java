@@ -44,7 +44,7 @@ public class BottomFragmentOne extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.bottom_fragment_one, container, false);
         tmpD= (TextView) view.findViewById(R.id.tmp_d);
-         tmpN = (TextView) view.findViewById(R.id.tmp_n);
+        tmpN = (TextView) view.findViewById(R.id.tmp_n);
         imageD= (SimpleDraweeView) view.findViewById(R.id.image_d);
         imageN= (SimpleDraweeView) view.findViewById(R.id.image_n);
         setUI();

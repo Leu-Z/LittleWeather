@@ -8,11 +8,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.leu.littleweather.R;
-import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.biz.ForecastBiz;
 import com.leu.littleweather.util.CommonUtil;
 
@@ -25,21 +25,20 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
 /**
  * Created by Leu on 2015/9/4.
  */
-public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnClickListener {
+public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnClickListener,OnClickListener {
     private static final String ARG_CITY = "city";
     private String mCity;
     private ViewPager mViewPager;
     private ArrayList<Fragment> mFragmentList;
     private PtrFrameLayout frame;
     private MaterialHeader header;
-    //城市天气缓存
-    private Forecast mForecast;
     private BottomFragmentOne mBottomOne;
     private Button mButtonLeft;
     private Button mButtonRight;
-    private String max;
-    private String min;
     private ForecastBiz mForecastBiz;
+    private BottomFragmentTwo mBottomTwo;
+    private View view;
+    private InnerPagerAdapter mInnerAdapter;
 
     public static OutterFragment newInstance(String city) {
 
@@ -65,13 +64,13 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.outter_fragment, container, false);
+        view = inflater.inflate(R.layout.outter_fragment, container, false);
         //根据传递进来的mNewsType生成特定的view
-        init(view);
+        init();
         return view;
     }
 
-    private void init(final View view) {
+    private void init() {
         final Activity parentActivity = getActivity();
         //这个用于下拉刷新
         frame = (PtrFrameLayout) view.findViewById(R.id.ptr_frame);
@@ -107,11 +106,11 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
                 frame.refreshComplete();
             }
         });
-
         mButtonLeft = (Button) view.findViewById(R.id.button_left);
-        mButtonRight = (Button) view.findViewById(R.id.button_left);
-        /*mButtonLeft.setOnClickListener(this);
-        mButtonRight.setOnClickListener(this);*/
+        mButtonRight = (Button) view.findViewById(R.id.button_right);
+        mButtonLeft.setOnClickListener(this);
+        mButtonRight.setOnClickListener(this);
+
         //获取天气情况，并设置默认UI
         getForecastAndSetUi(false);
     }
@@ -128,69 +127,74 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
         }
         //否则依情况是从数据库还是网络获取,得到后放入数据库
         mForecastBiz.getCityForecast(mCity, CommonUtil.IsNetAvailable(getActivity()));
-
     }
 
     //在这个方法里面设置默认的UI
     @Override
     public void setDefaultUI() {   //今天的天气碎片
-        FragmentManager fm = getFragmentManager();
+
+        FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        if (mBottomOne == null) {
-            mBottomOne = new BottomFragmentOne().newInstanceOne(mCity);
-        }
+        mBottomOne = new BottomFragmentOne().newInstanceOne(mCity);
+        mBottomTwo = new BottomFragmentTwo().newInstanceTwo(mCity);
+        transaction.add(R.id.bottom_weather, mBottomTwo);
+        transaction.hide(mBottomTwo);
         transaction.add(R.id.bottom_weather, mBottomOne);
         transaction.commit();
-        //四天天气碎片
+
+        initViewPager();
+
 
     }
     //在这里更新UI
     @Override
     public void UpdateUI(){
         mBottomOne.setUI();
+        mBottomTwo.setUI();
+        mInnerAdapter.notifyDataSetChanged();
     }
 
-
-   /* @Override
-    public void onClick(View v)
-    {
-        FragmentManager fm = getFragmentManager();
+    @Override
+    public void onClick(View v) {
+        FragmentManager fm = getChildFragmentManager();
         // 开启Fragment事务
         FragmentTransaction transaction = fm.beginTransaction();
 
         switch (v.getId())
         {
             case R.id.button_left:
-
+                transaction.hide(mBottomTwo);
                 transaction.show(mBottomOne);
                 break;
             case R.id.button_right:
-                if ( == null)
-                {
-                    mFriend = new FriendFragment();
-                }
-                transaction.replace(R.id.id_content, mFriend);
+                transaction.hide(mBottomOne);
+                transaction.show(mBottomTwo);
                 break;
         }
-        // transaction.addToBackStack();
         // 事务提交
         transaction.commit();
     }
-*/
 
 
-   /* private void initViewPager(View view) {
+
+    private void initViewPager() {
         mViewPager= (ViewPager) view.findViewById(R.id.innerViewpager);
         mFragmentList = new ArrayList<Fragment>();
-        MiddleFragment middleFragment=MiddleFragment.newInstance(position);
+        FragmentManager fm = getChildFragmentManager();
 
+        MiddleFragment middleFragment=MiddleFragment.newInstance(mCity);
+        LeftFragment leftFragment=LeftFragment.newInstance(mCity);
+        RightFragment rightFragment=RightFragment.newInstance(mCity);
+
+        mFragmentList.add(leftFragment);
         mFragmentList.add(middleFragment);
+        mFragmentList.add(rightFragment);
 
-        mViewPager.setAdapter(new InnerPagerAdapter(getFragmentManager(),mFragmentList));
+        mInnerAdapter=new InnerPagerAdapter(fm, mFragmentList);
+        mViewPager.setAdapter(mInnerAdapter);
 
-
+        mViewPager.setCurrentItem(1);
     }
-*/
 
 
 }

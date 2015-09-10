@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/day1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                >
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tmp_d1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                />
+            <TextView
+                android:id="@+id/tmp_n1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/day2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                >
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tmp_d2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+
+                />
+            <TextView
+                android:id="@+id/tmp_n2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/day3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                >
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tmp_d3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+
+                />
+            <TextView
+                android:id="@+id/tmp_n3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:id="@+id/day4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                >
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/image4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    />
+            </LinearLayout>
+
+            <TextView
+            android:id="@+id/tmp_d4"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+
+            />
+            <TextView
+                android:id="@+id/tmp_n4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
