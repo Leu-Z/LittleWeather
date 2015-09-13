@@ -2,13 +2,13 @@ package com.leu.littleweather.ui;
 
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 
@@ -18,7 +18,6 @@ import com.leu.littleweather.bean.Forecast;
 public class MiddleFragment extends BaseFragment {
     private static final String ARG_CITY = "city";
     private String mCity;
-    private ViewPager mViewPager;
 
     public static MiddleFragment newInstance(String city) {
         MiddleFragment fragment = new MiddleFragment();
@@ -27,6 +26,7 @@ public class MiddleFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,19 +34,19 @@ public class MiddleFragment extends BaseFragment {
             mCity = getArguments().getString(ARG_CITY);
         }
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.middle_fragment, container, false);
-        TextView nowTmp= (TextView) view.findViewById(R.id.now_tmp);
-        ImageView image= (ImageView) view.findViewById(R.id.image_d);
-        TextView describe= (TextView) view.findViewById(R.id.describe);
-        TextView bodyTmp= (TextView) view.findViewById(R.id.body_tmp);
-        TextView hum= (TextView) view.findViewById(R.id.hum);
-        TextView wind= (TextView) view.findViewById(R.id.wind);
-        TextView level= (TextView) view.findViewById(R.id.level);
 
-        Forecast forecast =mFrecastDao.getForecastByCity(mCity);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.middle_fragment, container, false);
+        TextView nowTmp = (TextView) view.findViewById(R.id.now_tmp);
+        SimpleDraweeView image = (SimpleDraweeView) view.findViewById(R.id.image_d);
+        TextView describe = (TextView) view.findViewById(R.id.describe);
+        TextView bodyTmp = (TextView) view.findViewById(R.id.body_tmp);
+        TextView hum = (TextView) view.findViewById(R.id.hum);
+        TextView wind = (TextView) view.findViewById(R.id.wind);
+        TextView level = (TextView) view.findViewById(R.id.level);
+
+        Forecast forecast = mFrecastDao.getForecastByCity(mCity);
         nowTmp.setText(forecast.getTmp());
         image.setImageURI(getImageUri(forecast.getNow_code()));
         describe.setText(forecast.getNow_txt());
@@ -55,6 +55,7 @@ public class MiddleFragment extends BaseFragment {
         wind.setText(forecast.getDir());
         level.setText(forecast.getSc());
 
+        Log.d("MiddleFragment","run");
         return view;
     }
 

@@ -346,7 +346,7 @@ public class ForecastBiz {
             getInfoFromIntnet(forecast,true);
         }
         //如果过期了，从网络获取
-        else if (!(this.isOutOfTime(forecast) > 0)) {
+        else if(!(this.isOutOfTime(forecast) > 0)){
             getInfoFromIntnet(forecast,true);
         }
         //如果未过期，就什么也不做

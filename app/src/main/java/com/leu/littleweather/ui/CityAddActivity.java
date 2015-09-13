@@ -1,6 +1,5 @@
 package com.leu.littleweather.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
-import com.leu.littleweather.util.ActivityCollector;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -45,10 +43,7 @@ public class CityAddActivity extends BaseActivity{
                     Forecast forecast=new Forecast();
                     forecast.setCity((String) textview.getText());
                     mforecastDao.addOrUpdate(forecast);
-                    //把主活动销毁，重新创建
-                    ActivityCollector.activities.get(0).finish();
-                    Intent intent=new Intent(CityAddActivity.this,MainActivity.class);
-                    startActivity(intent);
+
                     finish();
                 }
             }

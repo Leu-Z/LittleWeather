@@ -3,7 +3,6 @@ package com.leu.littleweather.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
-import com.leu.littleweather.biz.ForecastBiz;
 import com.leu.littleweather.dao.ForecastDao;
 
 import java.util.ArrayList;
@@ -27,11 +25,9 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
     private ForecastDao mforecastDao;
-    private ForecastBiz forecastBiz;
     private List<Forecast> mForecasts;
     private ViewPager mOutterViewPager;
     private ArrayList<OutterFragment> mFragmentList;
-    private List<Integer> mIds;
 
 
     @Override
@@ -41,16 +37,23 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         mforecastDao=new ForecastDao(this);
         initView();
-        initViewPager();
-        forecastBiz=new ForecastBiz(this);
+
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initViewPager();
 
-
+    }
 
     private void initView() {
+        //mForecasts=mforecastDao.getAllCity();
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        //设置初始城市在toolbar上面的城市名
+       /* if (mForecasts.size()!=0){
+        mToolbar.setTitle(mForecasts.get(0).getCity());}*/
         setSupportActionBar(mToolbar);
         //设置菜单回调
         mToolbar.setOnMenuItemClickListener(onMenuItemClick);
@@ -65,8 +68,10 @@ public class MainActivity extends BaseActivity {
         //设置抽屉里item的监听
         setupDrawerContent(mNavigationView);
 
-
-
+        mOutterViewPager = (ViewPager) findViewById(R.id.outterViewpager);
+        //设置viewpager切换动画
+        mOutterViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mFragmentList = new ArrayList<OutterFragment>();
     }
 
     private void setupDrawerContent(NavigationView navigationView)
@@ -78,6 +83,7 @@ public class MainActivity extends BaseActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.drawer_item_control_city:
+                                startActivity(new Intent(MainActivity.this,CityManageActivity.class));
                                 break;
                             case R.id.drawer_item_setting:
                                 Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
@@ -86,7 +92,6 @@ public class MainActivity extends BaseActivity {
                                 Toast.makeText(MainActivity.this, "about", Toast.LENGTH_SHORT).show();
                                 break;
                         }
-                        mDrawerLayout.closeDrawers();
                         return true;
                     }
                 });
@@ -112,45 +117,36 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViewPager(){
-        mOutterViewPager = (ViewPager) findViewById(R.id.outterViewpager);
-        //设置viewpager切换动画
-        FragmentManager fm = getSupportFragmentManager();
-       // OutterFragment outterFragment=(OutterFragment)fm.findFragmentById(R.id.outterViewpager);
-        mOutterViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-
-        mFragmentList = new ArrayList<OutterFragment>();
         mForecasts=mforecastDao.getAllCity();
-        //用于防止重复创建碎片
-       /* if(outterFragment==null) {
+        if (mForecasts.size()!=0){
+            mToolbar.setTitle(mForecasts.get(0).getCity());}
+
+        //如果容器中的碎片未销毁，就进行销毁。
+        if(mFragmentList.size()!=0) {
+            mFragmentList.clear();
+        }
             for (int i = 0; i < mForecasts.size(); i++) {
                 mFragmentList.add(OutterFragment.newInstance(mForecasts.get(i).getCity()));
             }
+            mOutterViewPager.setAdapter(new OutterPagerAdapter(getSupportFragmentManager(), mFragmentList));
+            mOutterViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    //更换城市名称
+                    mToolbar.setTitle(mForecasts.get(position).getCity());
 
-            mOutterViewPager.setAdapter(new OutterPagerAdapter(fm, mFragmentList));
-        }*/
-        for (int i = 0; i < mForecasts.size(); i++) {
-            mFragmentList.add(OutterFragment.newInstance(mForecasts.get(i).getCity()));
-        }
+                }
 
-        mOutterViewPager.setAdapter(new OutterPagerAdapter(fm, mFragmentList));
-        mToolbar.setTitle(mForecasts.get(0).getCity());
-        mOutterViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                //更换城市名称
-                mToolbar.setTitle(mForecasts.get(position).getCity());
+                @Override
+                public void onPageScrolled(int arg0, float arg1, int arg2) {
 
-            }
+                }
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                @Override
+                public void onPageScrollStateChanged(int arg0) {
+                }
+            });
 
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
-        });
 
     }
 

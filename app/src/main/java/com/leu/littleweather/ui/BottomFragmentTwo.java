@@ -37,7 +37,7 @@ public class BottomFragmentTwo extends BaseFragment {
     private TextView tmpN4;
     private SimpleDraweeView image4;
 
-    public static BottomFragmentTwo newInstanceTwo(String city) {
+    public static BottomFragmentTwo newInstance(String city) {
         BottomFragmentTwo fragment = new BottomFragmentTwo();
         Bundle args = new Bundle();
         args.putString(ARG_CITY, city);

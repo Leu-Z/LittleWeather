@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,11 +26,12 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
 /**
  * Created by Leu on 2015/9/4.
  */
-public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnClickListener,OnClickListener {
+public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnClickListener, OnClickListener {
     private static final String ARG_CITY = "city";
+    private static final String TAG = "OutterFragment";
     private String mCity;
     private ViewPager mViewPager;
-    private ArrayList<Fragment> mFragmentList;
+    private ArrayList<Fragment> mFragmentList = new ArrayList<Fragment>();
     private PtrFrameLayout frame;
     private MaterialHeader header;
     private BottomFragmentOne mBottomOne;
@@ -39,6 +41,9 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
     private BottomFragmentTwo mBottomTwo;
     private View view;
     private InnerPagerAdapter mInnerAdapter;
+    private MiddleFragment middleFragment;
+    private LeftFragment leftFragment;
+    private RightFragment rightFragment;
 
     public static OutterFragment newInstance(String city) {
 
@@ -55,8 +60,9 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
         if (getArguments() != null) {
 
             mCity = getArguments().getString(ARG_CITY);
-            mForecastBiz=new ForecastBiz(getActivity());
+            mForecastBiz = new ForecastBiz(getActivity());
             mForecastBiz.setfTwoBtnClickListener(this);
+            Log.d("OutterFragment","onCreate");
         }
     }
 
@@ -90,7 +96,6 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
         frame.setPinContent(true);
         //viewpager左右移动时无法下拉刷新
         frame.disableWhenHorizontalMove(true);
-
         //下拉刷新的功能接口
         frame.setPtrHandler(new PtrHandler() {
             @Override//判断是否可以下拉刷新。
@@ -124,9 +129,10 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
         //是否刷新,是的话从网络获取,
         if (ifRefresh) {
             mForecastBiz.getRefreshForecast(mCity, CommonUtil.IsNetAvailable(getActivity()));
+        } else {
+            //否则依情况是从数据库还是网络获取,得到后放入数据库
+            mForecastBiz.getCityForecast(mCity, CommonUtil.IsNetAvailable(getActivity()));
         }
-        //否则依情况是从数据库还是网络获取,得到后放入数据库
-        mForecastBiz.getCityForecast(mCity, CommonUtil.IsNetAvailable(getActivity()));
     }
 
     //在这个方法里面设置默认的UI
@@ -135,22 +141,43 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
 
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        mBottomOne = new BottomFragmentOne().newInstanceOne(mCity);
-        mBottomTwo = new BottomFragmentTwo().newInstanceTwo(mCity);
+
+        //防止父Fragment因为翻页而视图销毁时，导致Fragment重复生成实例的bug
+        //父Fragment视图重新创建的时候，嵌套在其中的子Fragment也会自动重新创建并呈现
+        //不需要再做别的操作,如add,commit之类的
+        //重新启动的Fragment，原来指向他的引用已经没用了，
+        // 就是说那个引用为null，但是fragment还是存在的。所以把之前的fragment全部销毁是最直接简单的解决方法。
+        if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+            Log.d(TAG, "remove all child fragment");
+            for (Fragment childFragment : fm.getFragments()) {
+                transaction.remove(childFragment);
+            }
+        }
+
+        Log.d("OutterFragment","新建了bottmfragment");
+        //为什么这里不能直接new？
+        //// TODO: 2015/9/13 这里创建了两次碎片
+        mBottomOne = BottomFragmentOne().newInstance(mCity);
+        mBottomTwo = BottomFragmentTwo().newInstance(mCity);
+
         transaction.add(R.id.bottom_weather, mBottomTwo);
         transaction.hide(mBottomTwo);
         transaction.add(R.id.bottom_weather, mBottomOne);
+
         transaction.commit();
+
+
 
         initViewPager();
 
-
     }
+
     //在这里更新UI
     @Override
-    public void UpdateUI(){
+    public void UpdateUI() {
         mBottomOne.setUI();
         mBottomTwo.setUI();
+        //重新加载三个Fragment
         mInnerAdapter.notifyDataSetChanged();
     }
 
@@ -160,8 +187,7 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
         // 开启Fragment事务
         FragmentTransaction transaction = fm.beginTransaction();
 
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.button_left:
                 transaction.hide(mBottomTwo);
                 transaction.show(mBottomOne);
@@ -176,24 +202,26 @@ public class OutterFragment extends BaseFragment implements ForecastBiz.FTwoBtnC
     }
 
 
-
     private void initViewPager() {
-        mViewPager= (ViewPager) view.findViewById(R.id.innerViewpager);
-        mFragmentList = new ArrayList<Fragment>();
+        mViewPager = (ViewPager) view.findViewById(R.id.innerViewpager);
+        //在方法里创建的对象，没有引用后，会被回收
         FragmentManager fm = getChildFragmentManager();
 
-        MiddleFragment middleFragment=MiddleFragment.newInstance(mCity);
-        LeftFragment leftFragment=LeftFragment.newInstance(mCity);
-        RightFragment rightFragment=RightFragment.newInstance(mCity);
 
-        mFragmentList.add(leftFragment);
-        mFragmentList.add(middleFragment);
-        mFragmentList.add(rightFragment);
+        if (middleFragment == null||leftFragment==null||rightFragment==null) {
+            middleFragment = MiddleFragment.newInstance(mCity);
+            leftFragment = LeftFragment.newInstance(mCity);
+            rightFragment = RightFragment.newInstance(mCity);
+            mFragmentList.add(leftFragment);
+            mFragmentList.add(middleFragment);
+            mFragmentList.add(rightFragment);
+            mInnerAdapter = new InnerPagerAdapter(fm, mFragmentList);
 
-        mInnerAdapter=new InnerPagerAdapter(fm, mFragmentList);
+        }
+        //因为viewpager会因为视图重建而被销毁，所以必须进行重新设置
         mViewPager.setAdapter(mInnerAdapter);
-
         mViewPager.setCurrentItem(1);
+
     }
 
 

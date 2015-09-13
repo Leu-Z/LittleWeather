@@ -51,7 +51,7 @@ public class ForecastDao {
     }
 
     /**
-     * 按照城市删除
+     * 按照城市名删除
      * @param   city 需要删除的城市
      * @return
      * @throws SQLException
