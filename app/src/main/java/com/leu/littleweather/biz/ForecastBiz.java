@@ -24,7 +24,7 @@ import java.util.Date;
  */
 public class ForecastBiz {
 
-    private final static String HTTPURL = "https://api.heweather.com/x3/weather?city=";
+    private final static String HTTPURL = "https://api.heweather.com/x3/weather?cityid=";
     private final static String KRY = "&key=7213d4bcf1a344bc988de12dd7199e3e";
     private static final int OUTOFTIME_MINUTE = 30;     //天气过期时间（分钟）
     private Context mContext;
@@ -32,15 +32,15 @@ public class ForecastBiz {
     private ForecastDao mForecastDao;
 
     private RequestQueue mQueue;
-    private FTwoBtnClickListener fTwoBtnClickListener ;
+    private UpdateClickListener fTwoBtnClickListener ;
 
-    public interface FTwoBtnClickListener
+    public interface UpdateClickListener
     {
-        void setDefaultUI();
+       // void setDefaultUI();
         void UpdateUI();
     }
     //设置回调接口
-    public  void setfTwoBtnClickListener(FTwoBtnClickListener fTwoBtnClickListener)
+    public  void setUpdateClickListener(UpdateClickListener fTwoBtnClickListener)
     {
         this.fTwoBtnClickListener = fTwoBtnClickListener;
     }
@@ -102,86 +102,14 @@ public class ForecastBiz {
         return calendar.getTime();
     }
 
-    /**
-     * 获取天气的数据库缓存,从数据库中获取Forecast
-     * 缓存就是说第二次要从数据库获取的时候就直接从缓存获取了，不需要重新从数据库获取
-     * 只有第一次进来的时候才会从数据库获取
-     * @param id
-     * @param isNeedRefresh
-     * @return
-     */
-   /* public Forecast getForecastCache(int id,boolean isNeedRefresh)  {
-        //如果缓存为空或需要强制刷新缓存时重新从数据库提取数据
-        if (mForecastCache == null || isNeedRefresh) {
-            //通过id从数据库得到符合要求的城市天气
-            mForecastCache = mForecastDao.getForecastById(id);
-        }
-        return mForecastCache;
-    }*/
-
-    /**
-     * 设置缓存,设置这个类里的NewsItemCache,从网络获取后
-     *
-     * @param mForecastCache
-     */
-    /*public void setForecastCache(Forecast mForecastCache) {
-        this.mForecastCache = mForecastCache;
-    }*/
-
-
-    /**
-     *
-     * 获取城市的天气并存入数据库中,更新天气
-     */
-   /* public Forecast getForecast(int id,boolean netAvailable,boolean ifEmptyCity) {
-        //如果不存在空城市，就可以直接从数据库获取
-        if(!ifEmptyCity) {
-            //当无网络时加载数据库中数据
-            if (!netAvailable) {
-                return getForecastCache(id,false);
-            }
-            //有网络时且数据未过期则也返回缓存数据
-            //用于使用过网络更新，又想再次更新时
-            if (this.isOutOfTime(getForecastCache(id, false)) > 0) {
-                return getForecastCache(id,false);
-            }
-            //如果网络连接未发生异常，且api未发生异常，就返回正常值，只要
-            //两个其中一个发生异常，就返回数据库原值。
-            try {
-                Forecast forecast = getInfoFromIntnet(id);
-                if (forecast!=null){
-                    return forecast;
-                }else {
-                    return getForecastCache(id,false);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(mContext, "获取城市天气失败", Toast.LENGTH_SHORT).show();
-                return getForecastCache(id,false);
-            }
-        }
-        //如果存在空城市，就必须从网络获取，而且如果获取失败只能返回null
-        //不然从数据库取出来的天气不不完整的
-        //如果网络连接未发生异常，且api未发生异常，就返回正常值，只要
-        //两个其中一个发生异常，就返回null。
-        else {
-            try {
-                return getInfoFromIntnet(id);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-    }*/
 
     /**
      * 从网络获取天气信息,成功的话,写入数据库,并更新UI,失败就什么也不做了
      *
      * @return
      */
-    public  void getInfoFromIntnet(final Forecast forecast , final boolean ifRefresh) {
-        String url = HTTPURL + forecast.getCity() + KRY;
+    public  void getInfoFromIntnet(final Forecast forecast ) {
+        String url = HTTPURL + forecast.getCity_id() + KRY;
         GsonRequest<JsonBean> gsonRequest = new GsonRequest<JsonBean>(
                 url, JsonBean.class,
                 new Response.Listener<JsonBean>() {
@@ -191,7 +119,7 @@ public class ForecastBiz {
                         forecast.setStatus(weather.getHeWeather().get(0).getStatus());
                         forecast.setNow_txt(weather.getHeWeather().get(0).getNow().getCond().getTxt());
                         forecast.setUpdate_time(weather.getHeWeather().get(0).getBasic().getUpdate().getLoc());
-                        forecast.setAqi(weather.getHeWeather().get(0).getAqi().getCity().getAqi());
+                        //forecast.setAqi(weather.getHeWeather().get(0).getAqi().getCity().getAqi());
                         forecast.setCity_id(weather.getHeWeather().get(0).getBasic().getId());
                         forecast.setComf_brf(weather.getHeWeather().get(0).getSuggestion().getComf().getBrf());
                         forecast.setComf_txt(weather.getHeWeather().get(0).getSuggestion().getComf().getTxt());
@@ -204,14 +132,14 @@ public class ForecastBiz {
                         forecast.setDrsg_brf(weather.getHeWeather().get(0).getSuggestion().getDrsg().getBrf());
                         forecast.setDrsg_txt(weather.getHeWeather().get(0).getSuggestion().getDrsg().getTxt());
                         forecast.setHum(weather.getHeWeather().get(0).getNow().getHum());
-                        forecast.setNo2(weather.getHeWeather().get(0).getAqi().getCity().getNo2());
+                       // forecast.setNo2(weather.getHeWeather().get(0).getAqi().getCity().getNo2());
                         forecast.setNow_code(weather.getHeWeather().get(0).getNow().getCond().getCode());
                         forecast.setNow_txt(weather.getHeWeather().get(0).getNow().getCond().getTxt());
-                        forecast.setPm10(weather.getHeWeather().get(0).getAqi().getCity().getPm10());
-                        forecast.setPm25(weather.getHeWeather().get(0).getAqi().getCity().getPm25());
-                        forecast.setQlty(weather.getHeWeather().get(0).getAqi().getCity().getQlty());
+                        //forecast.setPm10(weather.getHeWeather().get(0).getAqi().getCity().getPm10());
+                        //forecast.setPm25(weather.getHeWeather().get(0).getAqi().getCity().getPm25());.setQlty(weather.getHeWeather().get(0).getAqi().getCity().getQlty());
+                        //forecast.setQlty(weather.getHeWeather().get(0).getAqi().getCity().getQlty());
                         forecast.setSc(weather.getHeWeather().get(0).getNow().getWind().getSc());
-                        forecast.setSo2(weather.getHeWeather().get(0).getAqi().getCity().getSo2());
+                        //forecast.setSo2(weather.getHeWeather().get(0).getAqi().getCity().getSo2());
                         forecast.setSport_brf(weather.getHeWeather().get(0).getSuggestion().getSport().getBrf());
                         forecast.setSport_txt(weather.getHeWeather().get(0).getSuggestion().getSport().getTxt());
                         forecast.setTrav_brf(weather.getHeWeather().get(0).getSuggestion().getTrav().getBrf());
@@ -249,17 +177,10 @@ public class ForecastBiz {
 
                         //api是否发生异常,正常情况下才能写入数据库,并设置UI
                         if (!ifApiError(forecast.getStatus())) {
-                            //如果是刷新的话，调用刷新UI
-                            if (ifRefresh){
                                 mForecastDao.addOrUpdate(forecast);
                                 fTwoBtnClickListener.UpdateUI();
-                            }
-                            //否则设置默认UI
-                            else {
-                                mForecastDao.addOrUpdate(forecast);
-                                fTwoBtnClickListener.setDefaultUI();
-                            }
-
+                        }else {
+                            Toast.makeText(mContext, "api异常", Toast.LENGTH_SHORT).show();
                         }
                         //有异常的话就什么也不做了
                     }
@@ -268,6 +189,7 @@ public class ForecastBiz {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("TAG", error.getMessage(), error);
+                        Log.d("TAG","网络请求失败");
                     }
                 });
         //网络连接是异步执行的，所以不知道什么时候才能进入上面的回调函数，立马返回的话可能网络连接还没执行好。
@@ -308,48 +230,51 @@ public class ForecastBiz {
 
     /**
      * 获取城市天气，成功返回true,失败返回false,无网络或者api出错
-     * @param city
+     * @param cityid
      * @param netAvailable
      * @return
      */
-    public void getCityForecast(String city, boolean netAvailable) {
-        Forecast forecast = mForecastDao.getForecastByCity(city);
-        //城市是否有天气,有天气直接用数据库数据设置ui
+    public boolean getCityForecast(String cityid, boolean netAvailable) {
+        Forecast forecast = mForecastDao.getForecastByCityid(cityid);
+        //城市是否有天气,有的话啥都不做
         if ("ok".equals(forecast.getStatus())) {
-            fTwoBtnClickListener.setDefaultUI();
+            //fTwoBtnClickListener.UpdateUI();
+            return false;
         }
         //城市无天气但有网络，就从网络获取
         else if (netAvailable) {
-            getInfoFromIntnet(forecast,false);
+            getInfoFromIntnet(forecast);
+            return true;
         }else {
             //城市没有天气又没有网络，那就什么也不做了
             Toast.makeText(mContext, "请连接网络", Toast.LENGTH_SHORT).show();
+            return true;
         }
 
     }
 
     /**
      * 刷新天气,失败返回null,无网络，未过期，api出错，返回null
-     * @param city
+     * @param cityid
      * @param netAvailable
      * @return
      */
-    public void getRefreshForecast(String city, boolean netAvailable) {
+    public void getRefreshForecast(String cityid, boolean netAvailable) {
         //有必要重新从数据库拿数据
-        Forecast forecast = mForecastDao.getForecastByCity(city);
+        Forecast forecast = mForecastDao.getForecastByCityid(cityid);
         //是否有网络,无网络就进行提示
         if (!netAvailable) {
             Toast.makeText(mContext, "请连接网络", Toast.LENGTH_SHORT).show();
         }
         //有网络时，城市是否有天气,没天气的话直接从网络获取,因为没更新时间可看。
         else if (!"ok".equals(forecast.getStatus())) {
-            getInfoFromIntnet(forecast,true);
+            getInfoFromIntnet(forecast);
         }
         //如果过期了，从网络获取
         else if(!(this.isOutOfTime(forecast) > 0)){
-            getInfoFromIntnet(forecast,true);
-        }
-        //如果未过期，就什么也不做
+            getInfoFromIntnet(forecast);
+        }//如果未过期，就什么也不做
+
     }
 
 

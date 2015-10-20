@@ -4,6 +4,7 @@
     android:layout_height="192dp"
     android:background="@drawable/background_drawer_header"
     android:padding="16dp"
+    android:fitsSystemWindows="true"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 

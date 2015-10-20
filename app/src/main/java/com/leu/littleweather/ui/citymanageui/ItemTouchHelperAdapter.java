@@ -1,4 +1,4 @@
-package com.leu.littleweather.ui;
+package com.leu.littleweather.ui.citymanageui;
 
 /**
  * Created by Leu on 2015/9/13.

@@ -3,6 +3,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_blue_500"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -21,6 +22,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
+                android:textColor="@android:color/white"
                 android:text="白天"
                 />
             <LinearLayout
@@ -31,8 +33,8 @@
                 >
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/image_d"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     />
             </LinearLayout>
             <TextView
@@ -40,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.3"
+                android:textColor="@android:color/white"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -63,6 +66,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
+                android:textColor="@android:color/white"
                 android:text="夜间"
                 />
             <LinearLayout
@@ -73,8 +77,8 @@
                 >
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/image_n"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     />
             </LinearLayout>
 
@@ -83,6 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.3"
+                android:textColor="@android:color/white"
                 android:gravity="center"
 
                 />

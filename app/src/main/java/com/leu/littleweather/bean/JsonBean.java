@@ -122,22 +122,22 @@ public class JsonBean {
                  * so2 : 2
                  */
 
-                private String aqi;
-                private String no2;
-                private String pm10;
-                private String pm25;
-                private String qlty;
-                private String so2;
+                //private String aqi;
+               // private String no2;
+               // private String pm10;
+                //private String pm25;
+               // private String qlty;
+                //private String so2;
 
-                public void setAqi(String aqi) {
+             /*   public void setAqi(String aqi) {
                     this.aqi = aqi;
-                }
+                }*/
 
-                public void setNo2(String no2) {
+               /* public void setNo2(String no2) {
                     this.no2 = no2;
-                }
+                }*/
 
-                public void setPm10(String pm10) {
+               /* public void setPm10(String pm10) {
                     this.pm10 = pm10;
                 }
 
@@ -147,21 +147,21 @@ public class JsonBean {
 
                 public void setQlty(String qlty) {
                     this.qlty = qlty;
-                }
+                }*/
 
-                public void setSo2(String so2) {
+               /* public void setSo2(String so2) {
                     this.so2 = so2;
-                }
+                }*/
 
-                public String getAqi() {
+               /* public String getAqi() {
                     return aqi;
-                }
+                }*/
 
-                public String getNo2() {
+               /* public String getNo2() {
                     return no2;
-                }
+                }*/
 
-                public String getPm10() {
+             /*   public String getPm10() {
                     return pm10;
                 }
 
@@ -171,11 +171,11 @@ public class JsonBean {
 
                 public String getQlty() {
                     return qlty;
-                }
+                }*/
 
-                public String getSo2() {
+                /*public String getSo2() {
                     return so2;
-                }
+                }*/
             }
         }
 

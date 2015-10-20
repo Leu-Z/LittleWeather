@@ -1,4 +1,4 @@
-package com.leu.littleweather.ui;
+package com.leu.littleweather.ui.citymanageui;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
@@ -14,20 +14,26 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         mAdapter = adapter;
     }
-    // 设置允许的上下左右动
+    // 设置允许的上下左右动作，这里都允许了
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
-    //拖拽回调,数据更新。最后在适配器中最终实际执行。
+    //拖拽回调,拖拽后自动触发，用于数据更新。最后在适配器中最终实际执行。
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        //拖动的position和目标position
+        //在适配器中处理数据改变.方便
         mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
-
+    //滑动回调，数据更新。
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+    }
     @Override
     public boolean isLongPressDragEnabled() {
         return false;
@@ -36,11 +42,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean isItemViewSwipeEnabled() {
         return true;
-    }
-    //滑动回调，数据更新。
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
     }
     //控制拖拽和滑动期间的view动画
     @Override

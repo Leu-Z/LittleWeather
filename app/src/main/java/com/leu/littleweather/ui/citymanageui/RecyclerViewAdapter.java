@@ -1,4 +1,4 @@
-package com.leu.littleweather.ui;
+package com.leu.littleweather.ui.citymanageui;
 
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
@@ -15,23 +15,26 @@ import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> implements ItemTouchHelperAdapter
+class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements ItemTouchHelperAdapter
 {
     private final OnStartDragListener mDragStartListener;
+    private final Context mContext;
     private  ForecastDao mForecastDao;
     private List<Forecast> mDatas;
     private LayoutInflater mInflater;
-
+    public List<Integer> mDeleteItem;
 
     //构造器，获得一个用于构造的list数据
-    public HomeAdapter(Context context, List<Forecast> datas)
-    {
+    public RecyclerViewAdapter(Context context, List<Forecast> datas)
+    {   mContext=context;
         mInflater = LayoutInflater.from(context);
         mDatas = datas;
         mForecastDao=new ForecastDao(context);
         mDragStartListener = (OnStartDragListener)context;
+        mDeleteItem=new ArrayList<Integer>();
     }
     //创建一个自定义的ViewHolder，设置其默认的item布局,得到内部子视图的引用
     @Override
@@ -92,6 +95,11 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
         //容器和适配器都改变
         mDatas.remove(position);
         notifyItemRemoved(position);
+        //把删除的城市序列进行回传。
+        mDeleteItem.add(position);
+        /*Intent intent=new Intent();
+        intent.putExtra("city_delete", mDeleteItem.toArray());
+        CityManageActivity.instance.setResult(MainActivity.REQUEST_DETAIL, intent);*/
 
     }
 

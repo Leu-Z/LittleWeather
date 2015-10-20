@@ -1,4 +1,4 @@
-package com.leu.littleweather.ui;
+package com.leu.littleweather.ui.citymanageui;
 
 import android.support.v7.widget.RecyclerView;
 

@@ -121,6 +121,27 @@ public class ForecastDao {
         }
         return null;
     }
+    /**
+     * 按照城市id查询,得到一个指定城市天气
+     * @param cityId
+     * @return
+     * @throws SQLException
+     */
+    public Forecast getForecastByCityid(String cityId)  {
+        try
+        {
+            //把相同标题的都查出来
+            List<Forecast> weathers = mForecastDao.queryBuilder().where().eq("city_id",cityId).query();
+            //查到了就返回第一个
+            if (weathers.size() > 0){
+                return weathers.get(0);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 获取数据库里所有的id
