@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="screen"
+    android:title="设置" >
+
+    <PreferenceCategory
+       android:key="common_setting"
+       android:title="通用设置" >
+
+        <CheckBoxPreference
+            android:key="auto_update"
+            android:summary="开启可以自动更新天气信息"
+            android:title="自动更新"
+            android:defaultValue="true">
+        </CheckBoxPreference>
+
+        <ListPreference
+            android:key="update_gap"
+            android:title="更新时间间隔"
+            android:entries="@array/list_entries"
+            android:entryValues="@array/list_entries_value"
+            android:dialogTitle="更新时间间隔"
+            android:defaultValue="@string/deflault_list_entries_value"
+            ></ListPreference>
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

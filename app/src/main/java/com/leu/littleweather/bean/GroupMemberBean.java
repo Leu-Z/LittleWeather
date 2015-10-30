@@ -3,15 +3,14 @@ package com.leu.littleweather.bean;
 /**
  * Created by Leu on 2015/10/18.
  */
-public class GroupMemberBean {
+public class  GroupMemberBean {
     private String city;   //县级市
     private String prefecture;//地级市
     private String province;//省
     private String sortLetters;  //显示数据拼音的首字母
     private String cityCode;//城市编码
 
-    public String getCityCode() {
-        return cityCode;
+    public String getCityCode() {return cityCode;
     }
 
     public void setCityCode(String cityCode) {

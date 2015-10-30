@@ -1,15 +1,12 @@
 package com.leu.littleweather.dao;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.leu.littleweather.bean.Forecast;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,7 +98,7 @@ public class ForecastDao {
     }
 
     /**
-     * 按照城市查询,得到一个指定城市天气
+     * 按照城市名称查询,得到一个指定城市天气
      * @param city
      * @return
      * @throws SQLException
@@ -143,23 +140,6 @@ public class ForecastDao {
         return null;
     }
 
-    /**
-     * 获取数据库里所有的id
-     * @return
-     */
-    public List<Integer> getAllId(){
-        List<Integer> ids=new ArrayList<Integer>();
-      SQLiteDatabase db=mDataBaseHelpter.getReadableDatabase();
-        Cursor cursor=db.query("tb_forecast", new String[]{"id"},null,null,null,null,null);
-        if(cursor.moveToFirst()){
-            do{
-                int id= cursor.getInt(cursor.getColumnIndex("id"));
-                ids.add(id);
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-        return ids;
-    }
 
 
     /**
@@ -186,12 +166,6 @@ public class ForecastDao {
         return null;
 
     }
-
-
-
-
-
-
 
 
 

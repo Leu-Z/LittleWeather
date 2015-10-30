@@ -7,13 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
 import com.leu.littleweather.ui.BaseActivity;
-import com.leu.littleweather.util.StatusBarCompat;
 
 import java.util.List;
 
@@ -34,28 +34,13 @@ public class CityManageActivity extends BaseActivity implements OnStartDragListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.city_manager);
-        StatusBarCompat.compat(this);
+        //StatusBarCompat.compat(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("管理城市");
         setSupportActionBar(mToolbar);
-        //getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /*mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent();
-                //list无法直接转为arrat，需要手动转换。
-                int[] a = new int[adapter.mDeleteItem.size()];
-                for(int i=0;i<adapter.mDeleteItem.size();i++)
-                {
-                    a[i] = adapter.mDeleteItem.get(i);
-                }
-                intent.putExtra("city_delete", a);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });*/
+
 
         mForecastDao = new ForecastDao(this);
         mForecasts = mForecastDao.getAllCity();
@@ -86,27 +71,39 @@ public class CityManageActivity extends BaseActivity implements OnStartDragListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*Intent intent=new Intent();
-        intent.putExtra("city_delete", adapter.mDeleteItem.toArray());
-        CityManageActivity.instance.setResult(MainActivity.REQUEST_DETAIL, intent);*/
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            int size=adapter.mDeleteItem.size();
-            if (size>0) {
-                int[] a = new int[size];
-                Intent intent = new Intent();
-                //list无法直接转为arrat，需要手动转换。
-                for (int i = 0; i < size; i++) {
-                    a[i] = adapter.mDeleteItem.get(i);
-                }
-                intent.putExtra("city_delete", a);
-                setResult(RESULT_OK, intent);
-            }
+            sendbackMessage();
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            sendbackMessage();
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void sendbackMessage(){
+        List<Integer> deleteItem =adapter.getmDeleteItem();
+        if (deleteItem.size()>0) {
+            int[] a = new int[deleteItem.size()];
+            Intent intent = new Intent();
+            //list无法直接转为array，需要手动转换。
+            for (int i = 0; i < deleteItem.size(); i++) {
+                a[i] = deleteItem.get(i);
+            }
+            intent.putExtra("city_delete", a);
+            setResult(RESULT_OK, intent);
+        }
     }
 }

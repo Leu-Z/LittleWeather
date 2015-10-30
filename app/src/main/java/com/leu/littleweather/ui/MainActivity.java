@@ -1,9 +1,12 @@
 package com.leu.littleweather.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,10 +21,14 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
+import com.leu.littleweather.ex.AutoUpdateSevice;
 import com.leu.littleweather.ui.cityaddui.CityAddActivity;
 import com.leu.littleweather.ui.citymanageui.CityManageActivity;
+import com.leu.littleweather.ui.fragmentui.AddCityDialog;
 import com.leu.littleweather.ui.fragmentui.OutterFragment;
 import com.leu.littleweather.ui.fragmentui.OutterPagerAdapter;
+import com.leu.littleweather.ui.settingui.SettingActivity;
+import com.leu.littleweather.util.LoadingTask;
 import com.leu.littleweather.util.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
@@ -38,6 +45,31 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private boolean mNewCityAdd;
     private OutterPagerAdapter mAdapter;
     private String mNewCityName;
+
+    public String getmNewCityId() {
+        return mNewCityId;
+    }
+
+    public void setmNewCityId(String mNewCityId) {
+        this.mNewCityId = mNewCityId;
+    }
+
+    public String getmNewCityName() {
+        return mNewCityName;
+    }
+
+    public void setmNewCityName(String mNewCityName) {
+        this.mNewCityName = mNewCityName;
+    }
+
+    public boolean ismNewCityAdd() {
+        return mNewCityAdd;
+    }
+
+    public void setmNewCityAdd(boolean mNewCityAdd) {
+        this.mNewCityAdd = mNewCityAdd;
+    }
+
     private android.support.v4.app.FragmentManager fm;
     private boolean mCityDeltete;
     private int[] mDeleteCityArry;
@@ -54,6 +86,10 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setContentView(R.layout.activity_main);
         //StatusBarCompat.compat(this);
         mforecastDao = new ForecastDao(this);
+        //设置自动更新服务
+        autoUpdate();
+        //获取城市数据列表
+        new LoadingTask().execute(this);
         initView();
         initViewPager();
     }
@@ -92,10 +128,15 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             mCityName.add(forecasts.get(i).getCity());
         }
         //如果城市为0，就跳转到添加城市页面
-        if (mCityIds.size()<=0){
+        /*if (mCityIds.size()<=0){
+          *//*  if (addCityDialog==null) {
+                addCityDialog = new AddCityDialog();
+            }
+            addCityDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            addCityDialog.show(getSupportFragmentManager(),"addcity");*//*
             Intent intent = new Intent(MainActivity.this, CityAddActivity.class);
             startActivityForResult(intent, 1);
-        }
+        }*/
         //设置初始的Toolbar城市名
         if (mCityIds.size() != 0) {
             mToolbar.setTitle(mCityName.get(0));
@@ -130,14 +171,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     //下拉刷新操作
     @Override
     public void onRefresh() {
-        mSwipeLayout.setRefreshing(true);
-        //得到当前页的fragment实例
-        String fragmentTag = mAdapter.getFragmentTag(mOutterViewPager.getCurrentItem());
-        OutterFragment outterFragment = (OutterFragment) fm.findFragmentByTag(fragmentTag);
-        //从网络获取数据后刷新界面。
-        outterFragment.update();
-        //刷新结束
-        mSwipeLayout.setRefreshing(false);
+       //只有存在城市时才允许下拉刷新
+        if (mCityIds.size()>0) {
+            mSwipeLayout.setRefreshing(true);
+            //得到当前页的fragment实例
+            String fragmentTag = mAdapter.getFragmentTag(mOutterViewPager.getCurrentItem());
+            OutterFragment outterFragment = (OutterFragment) fm.findFragmentByTag(fragmentTag);
+            //从网络获取数据后刷新界面。
+            outterFragment.update();
+            //刷新结束
+            mSwipeLayout.setRefreshing(false);
+        }
     }
 
     //抽屉点击事件
@@ -149,11 +193,12 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.drawer_item_control_city:
-                                Intent intent = new Intent(MainActivity.this, CityManageActivity.class);
-                                startActivityForResult(intent, 2);
+                                Intent intent1 = new Intent(MainActivity.this, CityManageActivity.class);
+                                startActivityForResult(intent1, 2);
                                 break;
                             case R.id.drawer_item_setting:
-                                Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
+                                Intent intent2 = new Intent(MainActivity.this, SettingActivity.class);
+                                startActivity(intent2);
                                 break;
                             case R.id.drawer_item_about:
                                 Toast.makeText(MainActivity.this, "about", Toast.LENGTH_SHORT).show();
@@ -164,14 +209,20 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 });
     }
 
+    private AddCityDialog addCityDialog;
     //ToolBar上面菜单选项的回调
     private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_add_city:
-                    Intent intent = new Intent(MainActivity.this, CityAddActivity.class);
-                    startActivityForResult(intent, 1);
+                    if (addCityDialog==null) {
+                        addCityDialog = new AddCityDialog();
+                    }
+                    addCityDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                    addCityDialog.show(getSupportFragmentManager(),"addcity");
+                    /*Intent intent = new Intent(MainActivity.this, CityAddActivity.class);
+                    startActivityForResult(intent, 1);*/
                     break;
             }
             return true;
@@ -225,14 +276,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
 
     //这个是增加一个城市的更新方法。
-    private void updateUiAdd() {
+    public void updateUiAdd() {
         mCityIds.add(mNewCityId);
         mCityName.add(mNewCityName);
         mAdapter.setList(mCityIds);
         mAdapter.notifyDataSetChanged();
         //增加城市后，立马切换到那个城市页面上去。
         mOutterViewPager.setCurrentItem(mCityIds.size() - 1);
+        mToolbar.setTitle(mCityName.get(mOutterViewPager.getCurrentItem()));
     }
+
+
 
     //这个是删除一个城市的更新方法。
     private void updateUIDelete() {
@@ -240,15 +294,22 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         for (int i = 0; i < mDeleteCityArry.length; i++) {
             mCityIds.remove(mDeleteCityArry[i]);
             mCityName.remove(mDeleteCityArry[i]);
+            mAdapter.deleteListTag(mDeleteCityArry[i]);
         }
+        mAdapter.notifyChangeInPosition();
+        mAdapter.setList(mCityIds);
+        mAdapter.notifyDataSetChanged();
+
         //如果删除之后的城市没了，就跳转增加
         if (mCityIds.size()<=0){
             Intent intent = new Intent(MainActivity.this, CityAddActivity.class);
             startActivityForResult(intent, 1);
+            mToolbar.setTitle("");
+        }else {
+            mToolbar.setTitle(mCityName.get(mOutterViewPager.getCurrentItem()));
         }
-        mAdapter.setList(mCityIds);
-        mAdapter.notifyChangeInPosition(1);
-        mAdapter.notifyDataSetChanged();
+
+
     }
 
 
@@ -288,6 +349,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     mDeleteCityArry = data.getIntArrayExtra("city_delete");
                 }
                 break;
+        }
+    }
+
+    //开启自动更新服务。
+    private void autoUpdate(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean s = sharedPreferences.getBoolean("auto_update", true);
+        Intent intent = new Intent(this, AutoUpdateSevice.class);
+        //如果配置里面是true，那么就开启自动更新。
+        if (s){
+            startService(intent);
         }
     }
 

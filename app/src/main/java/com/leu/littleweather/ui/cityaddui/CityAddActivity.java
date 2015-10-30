@@ -29,9 +29,8 @@ import com.leu.littleweather.dao.ForecastDao;
 import com.leu.littleweather.ui.BaseActivity;
 import com.leu.littleweather.util.CharacterParser;
 import com.leu.littleweather.util.PinyinComparator;
+import com.leu.littleweather.util.SingleClass;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -141,8 +140,10 @@ public class CityAddActivity extends BaseActivity implements SectionIndexer {
             }
         });
         //得到List的数据bean
-        SourceDateList = filledData();
-
+        SingleClass singleClass=SingleClass.getSingleClass(this);
+        if (singleClass!=null) {
+            SourceDateList = singleClass.getGroupMemberBeanList();
+        }
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparator);
         //新建适配器
@@ -292,48 +293,7 @@ public class CityAddActivity extends BaseActivity implements SectionIndexer {
     }
 
 
-    /**
-     * 从txt文件中获取所有城市,并进行组装。
-     * @return
-     */
-    private List<GroupMemberBean> filledData(){
-        List<GroupMemberBean> mSortList = new ArrayList<GroupMemberBean>();
-        try {
-            InputStreamReader inputReader = new InputStreamReader( getResources().getAssets().open("city.txt") );
-            BufferedReader bufReader = new BufferedReader(inputReader);
-            String line="";
-            String[] str ;
-            //从txt文件中的所有城市中一个一个得取出来进行匹配
-            while((line = bufReader.readLine()) != null){
-                //通过中间的空格把城市分成5部分。
-                GroupMemberBean sortModel = new GroupMemberBean();
-                str = line.split("\t");
-                sortModel.setCityCode(str[0]);
-                sortModel.setCity(str[2]);
-                sortModel.setPrefecture(str[3]);
-                sortModel.setProvince(str[4]);
 
-                // 汉字转换成拼音
-                String pinyin = characterParser.getSelling(str[2]);
-                //获取拼音首字母
-                String sortString = pinyin.substring(0, 1).toUpperCase();
-
-                // 正则表达式，判断首字母是否是英文字母
-                //是英文字母的话就进行设置，否则设置为#
-                if (sortString.matches("[A-Z]")) {
-                    sortModel.setSortLetters(sortString.toUpperCase());
-                } else {
-                    sortModel.setSortLetters("#");
-                }
-                mSortList.add(sortModel);
-            }
-            return mSortList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
     /**
      * 根据输入框中的值来过滤数据并更新ListView
      *

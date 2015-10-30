@@ -108,7 +108,7 @@ public class ForecastBiz {
      *
      * @return
      */
-    public  void getInfoFromIntnet(final Forecast forecast ) {
+    public  void getInfoFromIntnet(final Forecast forecast , final boolean ifAutoUpdate) {
         String url = HTTPURL + forecast.getCity_id() + KRY;
         GsonRequest<JsonBean> gsonRequest = new GsonRequest<JsonBean>(
                 url, JsonBean.class,
@@ -178,9 +178,11 @@ public class ForecastBiz {
                         //api是否发生异常,正常情况下才能写入数据库,并设置UI
                         if (!ifApiError(forecast.getStatus())) {
                                 mForecastDao.addOrUpdate(forecast);
-                                fTwoBtnClickListener.UpdateUI();
+                                if (!ifAutoUpdate) {
+                                    fTwoBtnClickListener.UpdateUI();
+                                }
                         }else {
-                            Toast.makeText(mContext, "api异常", Toast.LENGTH_SHORT).show();
+                            Log.e("TAG", "api异常");
                         }
                         //有异常的话就什么也不做了
                     }
@@ -243,7 +245,7 @@ public class ForecastBiz {
         }
         //城市无天气但有网络，就从网络获取
         else if (netAvailable) {
-            getInfoFromIntnet(forecast);
+            getInfoFromIntnet(forecast,false);
             return true;
         }else {
             //城市没有天气又没有网络，那就什么也不做了
@@ -259,7 +261,7 @@ public class ForecastBiz {
      * @param netAvailable
      * @return
      */
-    public void getRefreshForecast(String cityid, boolean netAvailable) {
+    public void getRefreshForecast(String cityid, boolean netAvailable,boolean ifAutoUpdate) {
         //有必要重新从数据库拿数据
         Forecast forecast = mForecastDao.getForecastByCityid(cityid);
         //是否有网络,无网络就进行提示
@@ -268,11 +270,11 @@ public class ForecastBiz {
         }
         //有网络时，城市是否有天气,没天气的话直接从网络获取,因为没更新时间可看。
         else if (!"ok".equals(forecast.getStatus())) {
-            getInfoFromIntnet(forecast);
+            getInfoFromIntnet(forecast,ifAutoUpdate);
         }
         //如果过期了，从网络获取
         else if(!(this.isOutOfTime(forecast) > 0)){
-            getInfoFromIntnet(forecast);
+            getInfoFromIntnet(forecast,ifAutoUpdate);
         }//如果未过期，就什么也不做
 
     }

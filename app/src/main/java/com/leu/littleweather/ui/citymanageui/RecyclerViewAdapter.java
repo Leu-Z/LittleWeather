@@ -25,7 +25,16 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyVie
     private  ForecastDao mForecastDao;
     private List<Forecast> mDatas;
     private LayoutInflater mInflater;
-    public List<Integer> mDeleteItem;
+    //删除的城市的集合
+    private List<Integer> mDeleteItem;
+
+    public List<Integer> getmDeleteItem() {
+        return mDeleteItem;
+    }
+
+    public void setmDeleteItem(List<Integer> mDeleteItem) {
+        this.mDeleteItem = mDeleteItem;
+    }
 
     //构造器，获得一个用于构造的list数据
     public RecyclerViewAdapter(Context context, List<Forecast> datas)
@@ -95,11 +104,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyVie
         //容器和适配器都改变
         mDatas.remove(position);
         notifyItemRemoved(position);
-        //把删除的城市序列进行回传。
+        //删除的城市的集合
         mDeleteItem.add(position);
-        /*Intent intent=new Intent();
-        intent.putExtra("city_delete", mDeleteItem.toArray());
-        CityManageActivity.instance.setResult(MainActivity.REQUEST_DETAIL, intent);*/
 
     }
 
