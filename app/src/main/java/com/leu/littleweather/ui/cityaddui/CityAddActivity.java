@@ -78,8 +78,6 @@ public class CityAddActivity extends BaseActivity implements SectionIndexer {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("选择城市");
         setSupportActionBar(toolbar);
-        //设置返回键可用
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //这两个用于设置挤压效果
         titleLayout = (LinearLayout) findViewById(R.id.title_layout);

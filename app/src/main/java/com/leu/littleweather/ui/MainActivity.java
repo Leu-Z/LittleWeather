@@ -15,13 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
 import com.leu.littleweather.ex.AutoUpdateSevice;
+import com.leu.littleweather.ui.aboutui.AboutActivity;
 import com.leu.littleweather.ui.cityaddui.CityAddActivity;
 import com.leu.littleweather.ui.citymanageui.CityManageActivity;
 import com.leu.littleweather.ui.fragmentui.AddCityDialog;
@@ -45,6 +46,15 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private boolean mNewCityAdd;
     private OutterPagerAdapter mAdapter;
     private String mNewCityName;
+    private TextView mLocationCity;
+
+    public TextView getmLocationCity() {
+        return mLocationCity;
+    }
+
+    public void setmLocationCity(TextView mLocationCity) {
+        this.mLocationCity = mLocationCity;
+    }
 
     public String getmNewCityId() {
         return mNewCityId;
@@ -117,6 +127,14 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void initView() {
+        mLocationCity= (TextView) findViewById(R.id.location_city);
+        SharedPreferences pref = getSharedPreferences("location", MODE_PRIVATE);
+        //参数二是默认值，当传入的键到不到对应的值时，会返回该值。
+        String city = pref.getString("city", "");
+        if (!city.equals("")){
+            mLocationCity.setText(city);
+        }
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         List<Forecast> forecasts = mforecastDao.getAllCity();
         mCityIds = new ArrayList<String>();
@@ -201,7 +219,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                                 startActivity(intent2);
                                 break;
                             case R.id.drawer_item_about:
-                                Toast.makeText(MainActivity.this, "about", Toast.LENGTH_SHORT).show();
+                                Intent intent3 = new Intent(MainActivity.this, AboutActivity.class);
+                                startActivity(intent3);
                                 break;
                         }
                         return true;

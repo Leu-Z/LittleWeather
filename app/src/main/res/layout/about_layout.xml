@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_blue_500"
+    android:gravity="center_horizontal"
+    >
+
+    <include layout="@layout/toolbar">
+
+    </include>
+
+    <ImageView
+        android:id="@+id/pictrue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@mipmap/ic_launcher"/>
+     <TextView
+         android:id="@+id/title"
+         android:layout_below="@+id/pictrue"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="30dp"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textColor="@android:color/white"
+         android:textSize="50sp"
+         android:textStyle="bold"
+         android:text="小天气"/>
+    <TextView
+        android:layout_below="@+id/title"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#a0ffffff"
+        android:textSize="15sp"
+        android:text="Version 1.0"
+        />
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/about_bg"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/qq_50"/>
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:text="QQ:512179501"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#a0ffffff"
+        android:textSize="10sp"
+        android:text="免费使用，自由传播无限制，Created by Leu_Z "
+        />
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#a0ffffff"
+        android:textSize="10sp"
+        android:text="气象数据来源于和风天气" />
+</RelativeLayout>

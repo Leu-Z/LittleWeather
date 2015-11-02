@@ -38,7 +38,6 @@ public class CityManageActivity extends BaseActivity implements OnStartDragListe
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("管理城市");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 

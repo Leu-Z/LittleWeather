@@ -3,4 +3,14 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:navigationBarColor">@color/light_blue_500</item>
     </style>
+
+    <style name="setting" parent="AppBaseTheme">
+        <item name="android:windowBackground">@color/light_blue_500</item>
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+        <item name="android:cacheColorHint">#000000</item>
+        <item name="android:navigationBarColor">@color/light_blue_500</item>
+        <item name="android:windowNoTitle">true</item>  <!-- 用来设定是否显示标题  -->
+    </style>
 </resources>

@@ -1,6 +1,8 @@
 package com.leu.littleweather.ui.fragmentui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -183,7 +185,17 @@ public class AddCityDialog extends DialogFragment implements View.OnClickListene
             MainActivity mainActivity= (MainActivity) getActivity();
             mainActivity.setmNewCityId(cityId);
             mainActivity.setmNewCityName(city);
+            mainActivity.getmLocationCity().setText(city);
+            //获取edit对象
+            SharedPreferences.Editor editor = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE).edit();
+            //往editor对象中添加各种类型的数据。
+            editor.putString("city", city);
+            //提交
+            editor.commit();
+
+
             mainActivity.updateUiAdd();
+
         }
     }
 

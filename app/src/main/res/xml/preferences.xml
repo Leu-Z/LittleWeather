@@ -2,7 +2,8 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="screen"
-    android:title="设置" >
+    android:title="设置"
+    >
 
     <PreferenceCategory
        android:key="common_setting"

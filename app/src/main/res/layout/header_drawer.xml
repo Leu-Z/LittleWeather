@@ -17,12 +17,14 @@
         android:layout_marginBottom="16dp"
         />
     <TextView
+        android:id="@+id/location_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="30dp"
         android:layout_alignParentBottom="true"
-        android:text="桐乡"
+        android:textStyle="bold"
+        android:text="未定位"
          />
 
 
