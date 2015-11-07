@@ -12,7 +12,13 @@
         <!--返回键样式-->
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
     </style>
-
+    <style name="setting" parent="@style/AppBaseTheme">
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:windowNoTitle">true</item>  <!-- 用来设定是否显示标题  -->
+    </style>
 
 
     <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
