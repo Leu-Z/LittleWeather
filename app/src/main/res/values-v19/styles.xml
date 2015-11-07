@@ -4,4 +4,15 @@
     <style name="AppTheme" parent="@style/AppBaseTheme">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
+    <style name="setting" parent="@style/AppBaseTheme">
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:windowNoTitle">true</item>  <!-- 用来设定是否显示标题  -->
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
 </resources>

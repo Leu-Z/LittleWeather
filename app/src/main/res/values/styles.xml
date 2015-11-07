@@ -13,14 +13,6 @@
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
     </style>
 
-    <style name="setting" parent="AppBaseTheme">
-        <item name="android:windowBackground">@color/light_blue_500</item>
-        <item name="android:focusable">false</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:textColorSecondary">#ffffff</item>
-        <item name="android:cacheColorHint">#00000000</item>
-        <item name="android:windowNoTitle">true</item>  <!-- 用来设定是否显示标题  -->
-    </style>
 
 
     <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">

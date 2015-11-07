@@ -45,19 +45,16 @@
         </activity>
         <activity android:name=".ui.citymanageui.CityManageActivity"></activity>
 
-        <activity
-            android:name=".ui.settingui.SettingActivity"
+        <activity android:name=".ui.settingui.SettingActivity"
             android:theme="@style/setting">
-            >
+
         </activity>
         <activity android:name=".ui.aboutui.AboutActivity">
 
         </activity>
 
-        <service android:name=".ex.AutoUpdateSevice" >
-        </service>
-        <receiver android:name=".ex.AlarmReceiver" >
-        </receiver>
+        <service android:name=".ex.AutoUpdateSevice"></service>
+        <receiver android:name=".ex.AlarmReceiver"></receiver>
 
     </application>
 
