@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.leu.littleweather.R;
 import com.leu.littleweather.ui.BaseActivity;
+import com.leu.littleweather.util.StatusBarCompat;
 
 /**
  * Created by Leu on 2015/10/31.
@@ -19,6 +20,7 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_layout);
+        StatusBarCompat.compat(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("关于小天气");
         setSupportActionBar(mToolbar);

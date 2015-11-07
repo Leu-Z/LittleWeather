@@ -30,6 +30,7 @@ import com.leu.littleweather.ui.fragmentui.OutterFragment;
 import com.leu.littleweather.ui.fragmentui.OutterPagerAdapter;
 import com.leu.littleweather.ui.settingui.SettingActivity;
 import com.leu.littleweather.util.LoadingTask;
+import com.leu.littleweather.util.StatusBarCompat;
 import com.leu.littleweather.util.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Log.d("MainActivity", "onCreate");
         Fresco.initialize(this);
         setContentView(R.layout.activity_main);
-        //StatusBarCompat.compat(this);
+        StatusBarCompat.compat(this);
         mforecastDao = new ForecastDao(this);
         //设置自动更新服务
         autoUpdate();

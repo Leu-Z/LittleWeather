@@ -14,6 +14,7 @@ import com.leu.littleweather.R;
 import com.leu.littleweather.bean.Forecast;
 import com.leu.littleweather.dao.ForecastDao;
 import com.leu.littleweather.ui.BaseActivity;
+import com.leu.littleweather.util.StatusBarCompat;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class CityManageActivity extends BaseActivity implements OnStartDragListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.city_manager);
-        //StatusBarCompat.compat(this);
+        StatusBarCompat.compat(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("管理城市");
         setSupportActionBar(mToolbar);

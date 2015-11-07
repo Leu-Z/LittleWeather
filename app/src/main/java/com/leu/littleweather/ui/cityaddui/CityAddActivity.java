@@ -30,6 +30,7 @@ import com.leu.littleweather.ui.BaseActivity;
 import com.leu.littleweather.util.CharacterParser;
 import com.leu.littleweather.util.PinyinComparator;
 import com.leu.littleweather.util.SingleClass;
+import com.leu.littleweather.util.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +69,7 @@ public class CityAddActivity extends BaseActivity implements SectionIndexer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.city_add_layout);
+        StatusBarCompat.compat(this);
         mforecastDao=new ForecastDao(this);
 
         initViews();
